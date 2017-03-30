@@ -30,4 +30,13 @@ def norm_dist(s1,s2,stem=True):
     keys = sorted(list(set(words1+words2)))
     v1 = words2vec(words1,keys)
     v2 = words2vec(words2,keys)
-    return LA.norm(v1/LA.norm(v1)-v2/LA.norm(v2))
+    n1 = LA.norm(v1)
+    n2 = LA.norm(v2)
+    if n1==0 and n2==0:
+        return 0
+    elif n1==0:
+        return LA.norm(v2/n2)
+    elif n2==0:
+        return LA.norm(v1/n1)
+    else:
+        return LA.norm(v1/n1-v2/n2)
