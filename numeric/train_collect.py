@@ -4,9 +4,11 @@ import numpy as np
 
 fnames = ["../features/001_word_count/001_word_count/train_wordcount.csv",
           "../features/001_word_count/002_word_count_tfidf/train_wordcount_tfidf.csv",
-          "../features/002_norm_dist/001_norm_dist/train_normdist.csv",
           "../features/001_word_count/003_word_count_nostem/train_wordcount_nostem.csv",
-          "../features/004_question_kind/train_WhatDiffCount.csv"
+          "../features/002_norm_dist/001_norm_dist/train_normdist.csv",
+          "../features/004_question_kind/train_WhatDiffCount.csv",
+          "../features/006_bigrams/001_bigram_count/train_bigramcount.csv",
+          "../features/007_trigrams/001_bigram_count/train_trigramcount.csv"
           ]
 
 df = pd.read_csv("../input/train_clean.csv",usecols=["is_duplicate"])
