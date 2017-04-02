@@ -9,20 +9,20 @@ from sklearn.cross_validation import KFold
 def run_xgb(train, features, target):
     #parameters
     params = {}
-    params["objective"]         = "reg:logistic"#"binary:logistic"
+    params["objective"]         = "binary:logistic"
     params["eval_metric"]       = "logloss"
-    params["booster"]           = "gbtree"
-    params["eta"]               = 0.05
-    params["tree_method"]       = 'exact'
-    params["max_depth"]         = 5
-    params["subsample"]         = 0.8
-    params["colsample_bytree"]  = 0.8
+#    params["booster"]           = "gbtree"
+    params["eta"]               = 0.02
+#    params["tree_method"]       = 'exact'
+    params["max_depth"]         = 4
+#    params["subsample"]         = 0.8
+#    params["colsample_bytree"]  = 0.8
     params["silent"]            = 1
-    params["nthread"]           = 4
-    params["seed"]              = 0
+#    params["nthread"]           = 4
+#    params["seed"]              = 0
 #    params["scale_pos_weight"]  = 0.8
 
-    X_train, X_valid = train_test_split(train, test_size=0.30, random_state=0)
+    X_train, X_valid = train_test_split(train, test_size=0.20, random_state=0)
     del train
     
     y_train = X_train[target]
@@ -33,22 +33,22 @@ def run_xgb(train, features, target):
     
     watchlist = [(dtrain, 'train'), (dvalid, 'eval')]
     gbm = xgb.train(params, dtrain, 20000, evals=watchlist,
-    		early_stopping_rounds=30, verbose_eval=100)
+    		early_stopping_rounds=50, verbose_eval=100)
 
     del dtrain, dvalid
     
     return gbm
 
-nrows=50000
+#nrows=400000
 
 path = "../../numeric/"
-df = pd.read_csv(path+"train_numeric.csv",nrows=nrows)
+df = pd.read_csv(path+"train_numeric.csv")#,nrows=nrows)
 
 target = "is_duplicate"
 features = list(df.columns.values)
 features.remove(target)
 
-kf = KFold(len(df.index),5)
+kf = KFold(len(df.index),3)
 scores = []
 for train_index, test_index in kf:
     train, valid = df.iloc[train_index,:], df.iloc[test_index,:]
