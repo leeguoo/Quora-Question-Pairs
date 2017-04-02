@@ -39,10 +39,10 @@ def run_xgb(train, features, target):
     
     return gbm
 
-#nrows=400000
+nrows=100000
 
 path = "../../numeric/"
-df = pd.read_csv(path+"train_numeric.csv")#,nrows=nrows)
+df = pd.read_csv(path+"train_numeric.csv",nrows=nrows)
 
 target = "is_duplicate"
 features = list(df.columns.values)
