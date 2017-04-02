@@ -19,5 +19,5 @@ def wordstem(fname):
         f.write(nline)
     f.close()
 
-wordstem("stops_train_clean.csv")
-
+#wordstem("stops_train_clean.csv")
+wordstem("stops_test_clean.csv")
