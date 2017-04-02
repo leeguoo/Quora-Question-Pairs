@@ -1,6 +1,5 @@
 #!/Users/guoli/anaconda2/bin/python
 from nltk.corpus import stopwords
-import pandas as pd
 import string
 from nltk.stem.snowball import SnowballStemmer
 
