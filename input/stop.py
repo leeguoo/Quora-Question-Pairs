@@ -20,5 +20,5 @@ def removestops(fname,n1,n2):
     f.close()
 
 #removestops("train_clean.csv",3,4)
-removestops("test_clean.csv",1,2)
-
+#removestops("test_clean.csv",1,2)
+removestops("test_clean2.csv",1,2)
