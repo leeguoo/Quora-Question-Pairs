@@ -25,17 +25,17 @@ def norm_dist(s1,s2):
     else:
         return LA.norm(v1/n1-v2/n2)
 
-def xGenerate(in_name,out_name):
+def xGenerate(col,in_name,out_name):
     f = open(in_name,"r")
     lines = f.readlines()
     f.close()
 
     f = open(out_name,"w")
-    f.write("col\n")
+    f.write(col+"\n")
     for line in lines[1:]:
         items = line[:-1].split(",")
         f.write("{0:.5E}\n".format(norm_dist(items[0],items[1])))
 
 in_name = "../../../input/stem_stops_train_clean.csv"
 out_name = "train_normdist.csv"
-xGenerate(in_name,out_name)
+xGenerate("ND",in_name,out_name)
