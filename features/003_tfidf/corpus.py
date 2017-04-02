@@ -19,7 +19,7 @@ def sentence2list(s,stem=True):
         return [word for word in words if word not in stopwords.words('english')]
 
 path = "/Users/guoli/Desktop/kaggle/quora/input/"
-train = pd.read_csv(path+"train.csv")
+train = pd.read_csv(path+"train.csv",sep='",')
 
 vs2l = np.vectorize(sentence2list)
 
