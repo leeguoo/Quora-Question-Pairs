@@ -1,16 +1,11 @@
-#!/Users/guoli/anaconda2/bin/python
+#!/usr/local/bin/python
 import string
-import pylab as plt
 import numpy as np
-import pandas as pd
-from nltk.stem.snowball import SnowballStemmer
-from nltk.corpus import stopwords
 from collections import Counter
 import itertools
 import json
 
-path = "/Users/guoli/Desktop/kaggle/quora/input/"
-f = open(path+'test.csv','r')
+f = open('raw/test.csv','r')
 lines = f.readlines()
 f.close()
 
