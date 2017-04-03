@@ -16,16 +16,10 @@ target = "is_duplicate"
 features = list(df.columns.values)
 features.remove(target)
 
-features.remove('WC_TFIDF')
-
 kf = KFold(len(df.index),5)
 scores = []
 for train_index, test_index in kf:
     train, valid = df.iloc[train_index,:], df.iloc[test_index,:]
-<<<<<<< HEAD
-=======
-#    rf = RandomForestClassifier(n_estimators=100)
->>>>>>> ac156edaffac67c6dffc5f2f486191e12c28915d
     rf = RandomForestRegressor(n_estimators=100)
     rf.fit(train[features],train[target])
 
