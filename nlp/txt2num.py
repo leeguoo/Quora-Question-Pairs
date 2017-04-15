@@ -1,3 +1,4 @@
+import time
 import string
 import nltk
 from nltk.corpus import stopwords
@@ -8,29 +9,49 @@ import itertools
 import numpy.linalg as LA
 from nltk.corpus import stopwords
 from nltk.stem.snowball import SnowballStemmer
+import datetime
+
+start = time.time()
+
+def showtime(start):
+    ts = str((datetime.timedelta(seconds=time.time()-start)))
+    return "Elapsed Time: {0}".format(ts)
 
 stemmer = SnowballStemmer("english")
 
 class txt2num(object):
 
     def __init__(self,trainpath,testpath):
+        print "reading and cleaning training data..."
         self.train = self.clean_train(trainpath)
-        self.test = self.clean_test(testpath)
-        self.get_word_list()
-        self.corpus = self.get_corpus()
+        print(showtime(start))
 
-        print "dealing with train data"
+        print "reading and cleaning testing data..."
+        self.test = self.clean_test(testpath)
+        print(showtime(start))
+
+        print "further cleaning the data and tranforming setences into word list..."
+        self.get_word_list()
+        print(showtime(start))
+
+        print "generating corpus..."
+        self.corpus = self.get_corpus()
+        print(showtime(start))
+
+        print "dealing with train data..."
         numtrain = pd.DataFrame()
         numtrain["is_duplicate"] = self.train.is_duplicate
         for i in range(3):
             numtrain = numtrain.join(self.get_features(self.train,i+1),how="outer")
         numtrain.to_csv("num_train.csv",index=False)
+        print(showtime(start))
 
-        print "dealing with test data"
+        print "dealing with test data..."
         numtest = pd.DataFrame()
         for i in range(3):
             numtest = numtest.join(self.get_features(self.test,i+1),how="outer")
         numtest.to_csv("num_test.csv",index=False)
+        print(showtime(start))
 
     def clean_train(self,trainpath):
         f = open(trainpath,'r')
@@ -87,10 +108,11 @@ class txt2num(object):
         for df in [self.train,self.test]:
             for q in ["question1","question2"]:
                 for punct in string.punctuation:
-                    df[q] = df[q].apply(lambda x: x.replace(punct," "))
+                    df[q] = df[q].str.replace(punct," ")
                 df[q] = df[q].str.lower()
                 df[q] = df[q].apply(lambda x: x.decode('unicode_escape').encode('ascii','ignore'))
-                df[q] = df[q].apply(lambda x: x.split())
+                #str.decode('unicode_escape').encode('ascii','ignore')
+                df[q] = df[q].str.split()
                 df[q] = df[q].apply(lambda x: [stemmer.stem(xx) for xx in x 
                                                if xx not in stopwords.words("english")])
 
