@@ -88,7 +88,7 @@ class txt2num(object):
             for q in ["question1","question2"]:
                 for punct in string.punctuation:
                     df[q] = df[q].apply(lambda x: x.replace(punct," "))
-                df[q] = df[q].apply(lambda x: x.lower())
+                df[q] = df[q].str.lower()
                 df[q] = df[q].apply(lambda x: x.decode('unicode_escape').encode('ascii','ignore'))
                 df[q] = df[q].apply(lambda x: x.split())
                 df[q] = df[q].apply(lambda x: [stemmer.stem(xx) for xx in x 
@@ -97,10 +97,10 @@ class txt2num(object):
     def get_features(self,df,n):
         self.idf = self.get_idf(n)
         ndf = pd.DataFrame()
-        ndf[str(n)+"_SWC"] = df.map(lambda x: self.shared_word_count(x,n))
-        ndf[str(n)+"_SWC_IDF"] = df.map(lambda x: self.idf_shared_word_count(x,n))
-        ndf[str(n)+"_ND"] = df.map(lambda x: self.norm_dist(x,n))
-        ndf[str(n)+"_ND_IDF"] = df.map(lambda x: self.idf_norm_dist(x,n))
+        ndf[str(n)+"_SWC"] = df.apply(lambda x: self.shared_word_count(x,n),axis=1)
+        ndf[str(n)+"_SWC_IDF"] = df.apply(lambda x: self.idf_shared_word_count(x,n),axis=1)
+        ndf[str(n)+"_ND"] = df.apply(lambda x: self.norm_dist(x,n),axis=1)
+        ndf[str(n)+"_ND_IDF"] = df.apply(lambda x: self.idf_norm_dist(x,n),axis=1)
         return ndf
 
     def get_corpus(self):
