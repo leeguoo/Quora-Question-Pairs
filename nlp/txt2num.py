@@ -19,12 +19,14 @@ class txt2num(object):
         self.get_word_list()
         self.corpus = self.get_corpus()
 
+        print "dealing with train data"
         numtrain = pd.DataFrame()
         numtrain["is_duplicate"] = self.train.is_duplicate
         for i in range(3):
             numtrain = numtrain.join(self.get_features(self.train,i+1),how="outer")
         numtrain.to_csv("num_train.csv",index=False)
 
+        print "dealing with test data"
         numtest = pd.DataFrame()
         for i in range(3):
             numtest = numtest.join(self.get_features(self.test,i+1),how="outer")
@@ -95,10 +97,10 @@ class txt2num(object):
     def get_features(self,df,n):
         self.idf = self.get_idf(n)
         ndf = pd.DataFrame()
-        ndf[str(n)+"_SWC"] = df.apply(lambda x: self.shared_word_count(x,n),axis=1)
-        ndf[str(n)+"_SWC_IDF"] = df.apply(lambda x: self.idf_shared_word_count(x,n),axis=1)
-        ndf[str(n)+"_ND"] = df.apply(lambda x: self.norm_dist(x,n),axis=1)
-        ndf[str(n)+"_ND_IDF"] = df.apply(lambda x: self.idf_norm_dist(x,n),axis=1)
+        ndf[str(n)+"_SWC"] = df.map(lambda x: self.shared_word_count(x,n))
+        ndf[str(n)+"_SWC_IDF"] = df.map(lambda x: self.idf_shared_word_count(x,n))
+        ndf[str(n)+"_ND"] = df.map(lambda x: self.norm_dist(x,n))
+        ndf[str(n)+"_ND_IDF"] = df.map(lambda x: self.idf_norm_dist(x,n))
         return ndf
 
     def get_corpus(self):
@@ -214,3 +216,4 @@ class txt2num(object):
             return LA.norm(v1/n1-v2/n2)
 
 TN = txt2num("train.csv","test.csv")
+#TN = txt2num("../local/train.csv","../local/test.csv")
